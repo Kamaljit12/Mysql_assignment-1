@@ -1,5 +1,5 @@
 -- create database practice;
-use practice;
+use assignment;
 ------------------- Assignment_1 with 50 Questions -----------------------
 
 create table CITY
@@ -946,4 +946,111 @@ select e.name, eu.unique_id from employees as e
 left join employeeuni as eu on e.id=eu.id;
 
 -- Q33
+
+create table if not exists users
+	(
+    id int,
+    name varchar(50),
+    constraint pk primary key(id)
+    );
+    
+ insert into Users VALUES
+	(1,'Alice'),
+	(2,'Bob'),
+	(3,'Alex'),
+	(4,'Donald'),
+	(7,'Lee'),
+	(13,'Jonathan'),
+	(19,'Elvis');   
+    
+create table if not exists Rides
+	(
+    id int,
+    u_id int,
+    distance int,
+    constraint pk primary key(id)
+    );
+    
+insert into Rides VALUES
+	(1,1,120),
+	(2,2,317),
+	(3,3,222),
+	(4,7,100),
+	(5,13,312),
+	(6,19,50),
+	(7,7,120),
+	(8,19,400),
+	(9,7,230);
+    
+select * from assignment.users;
+select * from assignment.rides;
+
+-- Write an SQL query to report the distance travelled by each user.
+-- Return the result table ordered by travelled_distance in descending
+-- order, if two or more users travelled the same distance, order them by
+-- their name in ascending order.
+
+select u.name as "user name", sum(r.distance) as "traveled distances" from users as u
+inner join rides as r on u.id=r.id
+group by u.id
+order by "traveled distances" desc, "user name" asc;
+
+--------------------------------------------------------------------------
+
+-- Q34
+
+-- Table: Products
+create table if not exists Products
+	(
+	product_id int,
+	product_name varchar(50),
+	product_category VARCHAR(50),
+	constraint pk PRIMARY KEY (product_id)
+	);
+insert into Products VALUES 
+	(1,'Leetcode Solutions','Book'),
+    (2,'Jewels of Stringology','Book'),
+    (3,'HP','Laptop'),
+    (4,'Lenovo','Laptop'),
+    (5,'Leetco de Kit','T-shirt');
+    
+    
+select * from Products;
+
+
+-- Table: Orders
+create table if not exists Orders
+	(
+	product_id int,
+	order_date date,
+	unit int
+	);
+insert into Orders values
+	(1,'2020-02-05',60),
+    (1,'2020-02-10',70),
+    (2,'2020-01-18',30),
+    (2,'2020-02-11',80),
+    (3,'2020-02-17',2),
+    (3,'2020-02-24',3),
+    (4,'2020-03-01',20),
+    (4,'2020-03-04',30),
+    (4,'2020-03-04',60),
+    (5,'2020-02-25',50),
+    (5,'2020-02-27',50),
+    (5,'2020-03-01',50);
+    
+select * from Orders;
+
+-- Write an SQL query to get the names of products that have at least
+-- 100 units ordered in February 2020 and their amount.
+-- Return result table in any order.
+
+
+select p.product_name, sum(o.unit) from assignment.products as p
+inner join assignment.orders as o on p.product_id=o.product_id
+where o.order_date like "2020-02-%%"
+group by p.product_id
+having sum(o.unit) >= 100;
+
+
 
